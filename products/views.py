@@ -2,20 +2,37 @@ from django.shortcuts import render,HttpResponseRedirect
 from products.models import *
 from users.models import User
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+
 def index(request):
     context = {
         'title':'Store',
     }
     return render(request,'products/index.html',context)
 
-def products(request):
+
+#модифицированная ф-ция для фильтрации по категориям
+def products(request,category_id=0,page=1):
+
+    if category_id:
+        category = ProductCategory.objects.get(id=category_id)
+        products = Product.objects.filter(category=category)
+    else:
+        products = Product.objects.all()
+
+    paginator = Paginator(products,3)
+    products_paginator = paginator.page(page)
+
     context = {
         'title': 'Store - каталог',
-        'products': Product.objects.all(),
-        'categories':ProductCategory.objects.all(),
-
+        'categories': ProductCategory.objects.all(),
+        'products':products_paginator,
+        'selected_cat': category_id,
     }
     return render(request,'products/products.html',context)
+
+
+
 
 
 # обработчик длядобавления товаров в корзину
