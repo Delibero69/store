@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, HttpResponseRedirect
 from users.models import *
 from users.forms import *
@@ -55,3 +56,7 @@ def profile(request):
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+
+
