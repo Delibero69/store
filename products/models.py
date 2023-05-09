@@ -26,6 +26,9 @@ class Product(models.Model):
 
 class BasketQuerySet(models.QuerySet):
     def total_sum(self):
+        # baskets = Basket.objects.filter(user=self.user)
+        #
+        # return sum(basket.sum() for basket in baskets)
         return sum(basket.sum() for basket in self)
 
     def total_quantity(self):

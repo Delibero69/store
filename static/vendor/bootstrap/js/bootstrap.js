@@ -3,6 +3,44 @@
   * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
+
+
+function updateQuantity(basketId, newQuantity) {
+  $.ajax({
+    url: '/update_basket_quantity/',
+    type: 'POST',
+    data: {
+      basket_id: basketId,
+      new_quantity: newQuantity
+    },
+    success: function(data) {
+      // Обновляем отображение количества товаров в корзине
+      $('#basket-count').text(data.basket_count);
+    }
+  });
+}
+
+$(document).ready(function() {
+  $('input[name="basketID"]').change(function() {
+    var basketId = $(this).data('basket-id');
+    var newQuantity = $(this).val();
+    updateQuantity(basketId, newQuantity);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery'), require('popper.js')) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery', 'popper.js'], factory) :
